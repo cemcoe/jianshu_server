@@ -1,0 +1,25 @@
+{
+  "name": "jianshu_server",
+  "version": "1.0.0",
+  "description": "简书服务端",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cemcoe/jianshu_server.git"
+  },
+  "keywords": [],
+  "author": "cemcoe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cemcoe/jianshu_server/issues"
+  },
+  "homepage": "https://github.com/cemcoe/jianshu_server#readme",
+  "dependencies": {
+    "koa": "^2.13.0",
+    "koa-router": "^9.4.0"
+  }
+}
