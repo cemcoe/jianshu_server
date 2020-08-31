@@ -1,10 +1,11 @@
 const Router = require('koa-router')
 
 const router = new Router()
+const { create } = require('../controllers/users.js')
 
 
 router.get('/users', ctx => ctx.body = '获取用户列表')
-router.post('/users', ctx => ctx.body = '创建账号')
+router.post('/users', create)
 router.get('/users/:id', ctx => ctx.body = '获取指定用户信息')
 router.patch('/users/:id', ctx => ctx.body = '更改某个用户信息')
 router.delete('/users/:id', ctx => ctx.body = '删除用户')

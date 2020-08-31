@@ -1,5 +1,10 @@
 const Koa = require('koa');
 const mongoose = require('mongoose')
+const parameter = require('koa-parameter')
+// 参数校验
+const koaBody = require('koa-body');
+// 获取post请求的body
+const path = require('path')
 const app = new Koa();
 const routing = require('./routes')
 const { connectionStr } = require('./config')
@@ -16,6 +21,18 @@ mongoose.connect(connectionStr,
 mongoose.connection.on('error', console.error)
 
 
+// 放在router前面
+app.use(koaBody({
+  multipart: true,
+  formidable: {
+    uploadDir: path.join(__dirname, '/public/uploads'),
+    // 上传目录
+    keepExtensions: true,
+  }
+}));
+
+
+app.use(parameter(app))
 routing(app)
 
 app.listen(3000, () => {
