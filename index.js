@@ -1,6 +1,19 @@
 const Koa = require('koa');
+const mongoose = require('mongoose')
 const app = new Koa();
 const routing = require('./routes')
+const { connectionStr } = require('./config')
+
+
+mongoose.connect(connectionStr,
+  {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  },
+  () => {
+    console.log('MongoDB 连接成功')
+  })
+mongoose.connection.on('error', console.error)
 
 
 routing(app)
