@@ -42,7 +42,29 @@ class UserCtl {
     // 登录成功返回token
     ctx.body = { token }
   }
-  
+
+
+  // 中间件检查是不是修改自己的信息
+  async checkOwner(ctx, next) {
+    // jwt 将 token 解析到的用户信息存放到了ctx.state.user中 ctx.state.user._id
+    if (ctx.params.id !== ctx.state.user._id) {
+      ctx.throw(403, '没有权限')
+    }
+    await next()
+  }
+
+
+  // 更新用户信息
+  async update(ctx) {
+    ctx.verifyParams({
+      name: { type: 'string', required: false },
+      password: { type: 'string', required: false },
+      gender: { type: "string", required: false },
+    })
+    const user = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body)
+    if (!user) { ctx.throw(404, '用户不存在') }
+    ctx.body = ctx.request.body;
+  }
 }
 
 module.exports = new UserCtl()
