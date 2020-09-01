@@ -65,6 +65,19 @@ class UserCtl {
     if (!user) { ctx.throw(404, '用户不存在') }
     ctx.body = ctx.request.body;
   }
+
+  // 获取符合条件的用户列表
+  async find(ctx) {
+    // ctx.body = await User.find()
+    // 默认每页展示10个用户信息
+    // 可以提供参数每页多少个以及页数以及关键字
+    const { per_page = 10 } = ctx.query
+    const page = Math.max(ctx.query.page * 1, 1) - 1
+    const perPage = Math.max(per_page * 1, 1)
+    ctx.body = await User
+      .find({ name: new RegExp(ctx.query.q) })
+      .limit(perPage).skip(page * perPage)
+  }
 }
 
 module.exports = new UserCtl()

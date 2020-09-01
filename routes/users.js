@@ -2,13 +2,13 @@ const Router = require('koa-router')
 const jwt = require('koa-jwt')
 
 const router = new Router()
-const { create, login, checkOwner,update } = require('../controllers/users.js')
+const { create, login, checkOwner, update, find } = require('../controllers/users.js')
 const { secret } = require('../config')
 
 const auth = jwt({ secret })
 // jwt 生成的用户信息存放在ctx.state上
 
-router.get('/users', ctx => ctx.body = '获取用户列表')
+router.get('/users', find)
 router.post('/users', create)
 router.get('/users/:id', ctx => ctx.body = '获取指定用户信息')
 // 用户只有在登录状态下才能修改自己的信息
