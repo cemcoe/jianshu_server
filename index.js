@@ -10,12 +10,12 @@ const routing = require('./routes')
 const { connectionStr } = require('./config')
 
 // 跨域问题
-app.use(async (ctx, next)=> {
+app.use(async (ctx, next) => {
   ctx.set('Access-Control-Allow-Origin', '*');
-  ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
-  ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  ctx.set('Access-Control-Allow-Headers', '*');
+  ctx.set('Access-Control-Allow-Methods', '*');
   if (ctx.method == 'OPTIONS') {
-    ctx.body = 200; 
+    ctx.body = 200;
   } else {
     await next();
   }
