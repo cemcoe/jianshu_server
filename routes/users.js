@@ -2,7 +2,7 @@ const Router = require('koa-router')
 const jwt = require('koa-jwt')
 
 const router = new Router()
-const { create, login, checkOwner, update, find, findById } = require('../controllers/users.js')
+const { create, login, checkOwner, update, find, findById, findUserInfo } = require('../controllers/users.js')
 const { secret } = require('../config')
 
 const auth = jwt({ secret })
@@ -11,6 +11,8 @@ const auth = jwt({ secret })
 router.get('/users', find)
 router.post('/users', create)
 router.get('/users/:id', findById)
+// 获取登录用户的详细信息
+router.get('/userinfo', auth, findUserInfo)
 // 用户只有在登录状态下才能修改自己的信息
 // 两个条件 登录 自己
 router.patch('/users/:id', auth, checkOwner, update)

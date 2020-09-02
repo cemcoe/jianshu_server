@@ -66,6 +66,12 @@ class UserCtl {
     ctx.body = ctx.request.body;
   }
 
+  // 获取自己的信息
+  async findUserInfo(ctx) {
+    const user = await User.findById(ctx.state.user._id)
+    ctx.body = user
+  }
+
   // 获取符合条件的用户列表
   async find(ctx) {
     // ctx.body = await User.find()
