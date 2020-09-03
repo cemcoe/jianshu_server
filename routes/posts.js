@@ -3,13 +3,13 @@ const jwt = require('koa-jwt')
 
 const router = new Router()
 // const { checkOwner } = require('../controllers/users.js')
-const { create } = require('../controllers/posts.js')
+const { create, find } = require('../controllers/posts.js')
 const { secret } = require('../config')
 
 const auth = jwt({ secret })
 // jwt 生成的用户信息存放在ctx.state上
 
-// router.get('/users', find)
+router.get('/posts', find)
 router.post('/posts', auth, create)
 // router.get('/users/:id', findById)
 // // 获取登录用户的详细信息
