@@ -31,6 +31,17 @@ class PostCtl {
       $or: [{ title: q }, { content: q }]
     }).limit(perPage).skip(page * perPage).populate('author')
   }
+
+  // 获取特定文章
+  async findById(ctx) {
+  
+    const post = await Post.findById(ctx.params.id).populate('author')
+
+    if (!post) {
+      ctx.throw(404, '文章不存在')
+    }
+    ctx.body = post
+  }
   
 }
 

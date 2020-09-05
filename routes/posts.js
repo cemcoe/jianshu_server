@@ -3,7 +3,7 @@ const jwt = require('koa-jwt')
 
 const router = new Router()
 // const { checkOwner } = require('../controllers/users.js')
-const { create, find } = require('../controllers/posts.js')
+const { create, find, findById } = require('../controllers/posts.js')
 const { secret } = require('../config')
 
 const auth = jwt({ secret })
@@ -11,8 +11,8 @@ const auth = jwt({ secret })
 
 router.get('/posts', find)
 router.post('/posts', auth, create)
-// router.get('/users/:id', findById)
-// // 获取登录用户的详细信息
+router.get('/posts/:id', findById)
+// 获取文章详情
 // router.get('/userinfo', auth, findUserInfo)
 // // 用户只有在登录状态下才能修改自己的信息
 // // 两个条件 登录 自己
