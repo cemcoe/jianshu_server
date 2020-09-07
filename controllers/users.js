@@ -87,31 +87,20 @@ class UserCtl {
 
   // 获取特定用户
   async findById(ctx) {
-    // 字段过滤
-    // http://localhost:8080/users/5f475aa812b37419ec743a74?fields=locations;business
-    // 返回locations;business字段
-    // 想要什么字段拼到fields后面
-    const { fields = '' } = ctx.query
-    // locations;business =》 '+locations+business'
-    const selectFields = fields.split(';').filter(f => f).map(f => ' +' + f).join('')
-
-    const populateStr = fields.split(';').filter(f => f).map(f => {
-      if (f === 'employments') {
-        return `employments.company employments.job`
+    try {
+      const user = await User.findById(ctx.params.id)
+      ctx.body = {
+        status: 200,
+        data: {
+          user
+        }
       }
-      if (f === 'educations') {
-        return `educations.school educations.major`
+    } catch (error) {
+      ctx.body = {
+        status: 404,
+        message: "用户不存在"
       }
-      return f
-    }).join(' ')
-
-    const user = await User.findById(ctx.params.id)
-      .select(selectFields).populate(populateStr)
-
-    if (!user) {
-      ctx.throw(404, '用户不存在')
     }
-    ctx.body = user
   }
 }
 
