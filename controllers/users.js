@@ -32,15 +32,27 @@ class UserCtl {
       name: { type: 'string', required: true },
       password: { type: 'string', required: true },
     })
-    const user = await User.findOne(ctx.request.body)
-    if (!user) {
-      ctx.throw(401, '用户名或密码不正确')
+    try {
+      const user = await User.findOne(ctx.request.body)
+      const { _id, name } = user
+      // 拿_id和name加密
+      const token = jsonwebtoken.sign({ _id, name }, secret, { expiresIn: '1d' })
+      // 登录成功返回token
+      ctx.body = {
+        status: 200,
+        data: {
+          token,
+          user,
+        }
+      }
+
+    } catch (error) {
+      ctx.body = {
+        status: 401,
+        message: "登录失败"
+      }
+
     }
-    const { _id, name } = user
-    // 拿_id和name加密
-    const token = jsonwebtoken.sign({ _id, name }, secret, { expiresIn: '1d' })
-    // 登录成功返回token
-    ctx.body = { token }
   }
 
 
