@@ -18,6 +18,6 @@ const userSchema = new Schema({
     type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     select: false,
   },
-})
+}, { timestamps: true })
 
 module.exports = model('User', userSchema)
