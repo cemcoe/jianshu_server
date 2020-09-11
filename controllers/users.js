@@ -17,11 +17,20 @@ class UserCtl {
     // koa-body 提供的 获取post请求的body功能
     const repeatedUser = await User.findOne({ name })
     if (repeatedUser) {
-      ctx.throw(409, '用户名已存在')
+      // ctx.throw(409, '用户名已存在')
+      // 登录成功返回token
+      ctx.body = {
+        status: 409,
+        message: '用户名已存在，换一个名字',
+      }
+      return
     }
     const user = await new User(ctx.request.body).save()
 
-    ctx.body = user
+    ctx.body = {
+      status: 200,
+      user,
+    }
   }
 
   // 用户登录
@@ -51,7 +60,6 @@ class UserCtl {
         status: 401,
         message: "登录失败"
       }
-
     }
   }
 
