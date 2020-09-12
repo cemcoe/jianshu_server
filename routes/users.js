@@ -2,7 +2,7 @@ const Router = require('koa-router')
 const jwt = require('koa-jwt')
 
 const router = new Router()
-const { create, login, checkOwner, update, find, findById, findUserInfo } = require('../controllers/users.js')
+const { create, login, checkOwner, update, find, findById, findUserInfo, listUserPosts } = require('../controllers/users.js')
 const { secret } = require('../config')
 
 const auth = jwt({ secret })
@@ -22,5 +22,7 @@ router.get('/users/:id/following', ctx => ctx.body = '获取用户列表')
 router.put('/users/following/:id', ctx => ctx.body = '关注某人')
 router.delete('/users/following/:id', ctx => ctx.body = '取消关注')
 router.get('/users/:id/followers', ctx => ctx.body = '获取粉丝列表')
+// 得到用户文章列表
+router.get('/users/:id/posts', listUserPosts)
 
 module.exports = router

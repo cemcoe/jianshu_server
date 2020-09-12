@@ -2,6 +2,7 @@ const jsonwebtoken = require('jsonwebtoken')
 // jwt 密钥
 const { secret } = require('../config')
 const User = require('../models/users')
+const Post = require('../models/posts')
 
 
 class UserCtl {
@@ -121,6 +122,16 @@ class UserCtl {
         message: "用户不存在"
       }
     }
+  }
+
+  // 获取用户编写的文章列表
+  async listUserPosts(ctx) {
+    const posts = await Post.find({author: { _id: ctx.params.id}}).populate('author') || []
+    ctx.body = {
+      status: 200,
+      data: posts,
+    }
+
   }
 }
 
