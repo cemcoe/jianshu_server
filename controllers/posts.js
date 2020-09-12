@@ -27,9 +27,10 @@ class PostCtl {
     const page = Math.max(ctx.query.page * 1, 1) - 1
     const perPage = Math.max(per_page * 1, 1)
     const q = new RegExp(ctx.query.q)
+    // skip(), limilt(), sort()三个放在一起执行的时候，执行的顺序是先 sort(), 然后是 skip()，最后是显示的 limit()。
     ctx.body = await Post.find({
       $or: [{ title: q }, { content: q }]
-    }).limit(perPage).skip(page * perPage).populate('author')
+    }).sort({"createdAt": -1}).limit(perPage).skip(page * perPage).populate('author')
   }
 
   // 获取特定文章

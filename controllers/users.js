@@ -126,7 +126,7 @@ class UserCtl {
 
   // 获取用户编写的文章列表
   async listUserPosts(ctx) {
-    const posts = await Post.find({author: { _id: ctx.params.id}}).populate('author') || []
+    const posts = await Post.find({author: { _id: ctx.params.id}}).sort({"createdAt": -1}).populate('author') || []
     ctx.body = {
       status: 200,
       data: posts,
