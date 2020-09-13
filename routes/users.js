@@ -2,7 +2,8 @@ const Router = require('koa-router')
 const jwt = require('koa-jwt')
 
 const router = new Router()
-const { create, login, checkOwner, update, find, findById, findUserInfo, listUserPosts } = require('../controllers/users.js')
+const { create, login, checkOwner, update, find, findById, findUserInfo, 
+  listUserPosts,follow,listFollowing, unfollow,listFollowers } = require('../controllers/users.js')
 const { secret } = require('../config')
 
 const auth = jwt({ secret })
@@ -18,10 +19,10 @@ router.get('/userinfo', auth, findUserInfo)
 router.patch('/users/:id', auth, checkOwner, update)
 router.delete('/users/:id', ctx => ctx.body = '删除用户')
 router.post('/login', login)
-router.get('/users/:id/following', ctx => ctx.body = '获取用户列表')
-router.put('/users/following/:id', ctx => ctx.body = '关注某人')
-router.delete('/users/following/:id', ctx => ctx.body = '取消关注')
-router.get('/users/:id/followers', ctx => ctx.body = '获取粉丝列表')
+router.get('/users/:id/following', listFollowing)
+router.put('/users/following/:id',auth, follow)
+router.delete('/users/following/:id', auth, unfollow)
+router.get('/users/:id/followers', listFollowers)
 // 得到用户文章列表
 router.get('/users/:id/posts', listUserPosts)
 

@@ -133,6 +133,48 @@ class UserCtl {
     }
 
   }
+
+  // 关注
+  // 关注用户接口
+  async follow(ctx) {
+    const me = await User.findById(ctx.state.user._id).select('+following')
+    // 关注列表包含了要关注的用户
+    if (!me.following.map(id => id.toString()).includes(ctx.params.id)) {
+      me.following.push(ctx.params.id)
+      me.save()
+    }
+    ctx.status = 204
+  }
+
+  // 获取用户关注列表
+  async listFollowing(ctx) {
+    const user = await User.findById(ctx.params.id).select('+following').populate('following')
+    if (!user) {
+      ctx.throw(404)
+    }
+    ctx.body = user.following
+  }
+
+  // 粉丝列表
+  async listFollowers(ctx) {
+    // 数据库条件查询
+    const users = await User.find({ following: ctx.params.id })
+    ctx.body = users
+  }
+
+  // 取消关注用户接口
+  async unfollow(ctx) {
+    const me = await User.findById(ctx.state.user._id).select('+following')
+    // 关注列表包含了要关注的用户
+    const index = me.following.map(id => id.toString()).indexOf(ctx.params.id)
+    if (index > -1) {
+      me.following.splice(index, 1)
+      me.save()
+    }
+    ctx.status = 204
+  }
+
+
 }
 
 module.exports = new UserCtl()
