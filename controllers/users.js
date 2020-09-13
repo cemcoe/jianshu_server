@@ -137,13 +137,26 @@ class UserCtl {
   // 关注
   // 关注用户接口
   async follow(ctx) {
+
+    // 要考虑的情况：
+    // 1. 用户没有登录
+    // 2. 用户关注自己
+    // 3. 用户已经关注该用户
+    // 4. 被关注用户已将该用户加入黑名单
+    // 。。。
     const me = await User.findById(ctx.state.user._id).select('+following')
     // 关注列表包含了要关注的用户
     if (!me.following.map(id => id.toString()).includes(ctx.params.id)) {
       me.following.push(ctx.params.id)
       me.save()
+      ctx.status = 204
+    } else {
+      ctx.body = {
+        status: 401,
+        message: '你已经关注此用户'
+      }
     }
-    ctx.status = 204
+    
   }
 
   // 获取用户关注列表
@@ -152,14 +165,24 @@ class UserCtl {
     if (!user) {
       ctx.throw(404)
     }
-    ctx.body = user.following
+    ctx.body = {
+      status: 200,
+      data: {
+        following: user.following
+      }
+    }
   }
 
   // 粉丝列表
   async listFollowers(ctx) {
     // 数据库条件查询
     const users = await User.find({ following: ctx.params.id })
-    ctx.body = users
+    ctx.body = {
+      status: 200,
+      data: {
+        followers: users
+      }
+    }
   }
 
   // 取消关注用户接口
@@ -170,11 +193,14 @@ class UserCtl {
     if (index > -1) {
       me.following.splice(index, 1)
       me.save()
+      ctx.status = 204
+    } else {
+      ctx.body = {
+        status: 401,
+        message: '取消关注失败'
+      }
     }
-    ctx.status = 204
   }
-
-
 }
 
 module.exports = new UserCtl()

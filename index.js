@@ -13,7 +13,7 @@ const { connectionStr } = require('./config')
 app.use(async (ctx, next) => {
   // log request URL:
   ctx.set("Access-Control-Allow-Origin", "*");
-  ctx.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+  ctx.set("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
   ctx.set("Access-Control-Max-Age", "3600");
   ctx.set("Access-Control-Allow-Headers", "x-requested-with,Authorization,Content-Type,Accept");
   ctx.set("Access-Control-Allow-Credentials", "true");
