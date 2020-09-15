@@ -23,19 +23,34 @@ class PostCtl {
     // ctx.body = await User.find()
     // 默认每页展示10篇文章
     // 可以提供参数每页多少个以及页数以及关键字
-    const { per_page = 5 } = ctx.query
+    const { per_page = 10 } = ctx.query
     const page = Math.max(ctx.query.page * 1, 1) - 1
     const perPage = Math.max(per_page * 1, 1)
     const q = new RegExp(ctx.query.q)
     // skip(), limilt(), sort()三个放在一起执行的时候，执行的顺序是先 sort(), 然后是 skip()，最后是显示的 limit()。
-    ctx.body = await Post.find({
+
+    const post = await Post.find({
       $or: [{ title: q }, { content: q }]
-    }).sort({"createdAt": -1}).limit(perPage).skip(page * perPage).populate('author')
+    }).sort({ "createdAt": -1 }).limit(perPage).skip(page * perPage).populate('author')
+
+    if (post.length === 0) {
+      ctx.body = {
+        status: 404,
+        message: '没有找到文章'
+      }
+      return
+    }
+    ctx.body = {
+      status: 200,
+      data: {
+        post
+      }
+    }
   }
 
   // 获取特定文章
   async findById(ctx) {
-  
+
     const post = await Post.findById(ctx.params.id).populate('author')
 
     if (!post) {
@@ -43,7 +58,7 @@ class PostCtl {
     }
     ctx.body = post
   }
-  
+
 }
 
 
