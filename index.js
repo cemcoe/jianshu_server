@@ -1,6 +1,8 @@
 const Koa = require('koa');
 const mongoose = require('mongoose')
 const parameter = require('koa-parameter')
+// 静态服务
+const koaStatic = require('koa-static')
 // 参数校验
 const koaBody = require('koa-body');
 // 获取post请求的body
@@ -43,6 +45,8 @@ mongoose.connect(connectionStr,
     console.log('MongoDB 连接成功')
   })
 mongoose.connection.on('error', console.error)
+
+app.use(koaStatic(path.join(__dirname, 'public')))
 
 
 // 放在router前面

@@ -1,5 +1,9 @@
 # config 为了便于部署将config也传到github上，真实项目中不要将此文件传输
 # config.js
+
+# 图片
+/public/uploads
+
 # Logs
 logs
 *.log
