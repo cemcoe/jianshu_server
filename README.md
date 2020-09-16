@@ -7,9 +7,13 @@ npm run dev
 ```
 
 线上部署
+注意创建上传文件存储文件夹，否则可能导致[405错误](https://github.com/cemcoe/jianshu_server/issues/1)
+
 ```
 git clone git@github.com:cemcoe/jianshu_server.git
 cd jianshu_server
+npm i
+mkdir public/uploads
 pm2 index.js
 ```
 
