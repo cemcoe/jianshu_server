@@ -80,7 +80,10 @@ class UserCtl {
     ctx.verifyParams({
       name: { type: 'string', required: false },
       password: { type: 'string', required: false },
+      // name 和password 是比较重要的资源，一般不允许用户随意更改
       gender: { type: "string", required: false },
+      bio: { type: "string", required: false },
+      avatar: { type: "string", required: false },
     })
     const user = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body)
     if (!user) { ctx.throw(404, '用户不存在') }

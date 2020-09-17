@@ -11,8 +11,13 @@ const userSchema = new Schema({
   name: { type: String, required: true },
   // select: false 不要将password返回给客户端
   password: { type: String, required: true, select: false },
+  // name 和 password 安全性较高，不能轻易被修改
+  
   gender: { type: String, enum: ['male', 'female'], default: 'male', required: true },
+  // 用户简介
   bio: { type: String },
+  // 用户头像
+  avatar: { type: String, default: 'https://cemcoe.imfast.io/jianshu/default_avatar.png' },
 
   following: {
     type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
