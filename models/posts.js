@@ -11,6 +11,7 @@ const postSchema = new Schema({
   __v: { type: Number, select: false },
   title: { type: String, required: true },
   content: { type: String, required: true },
+  abstract: { type: String, required: true },
   author: { type: Schema.Types.ObjectId, ref: 'User' },
 }, { timestamps: true })
 

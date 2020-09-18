@@ -7,6 +7,8 @@ class PostCtl {
     ctx.verifyParams({
       title: { type: 'string', required: true },
       content: { type: 'string', required: true },
+      // TODO 用户没有将摘要传过来，默认找前几个字
+      abstract: { type: 'string', required: true },
     })
     const author = ctx.state.user._id
 
