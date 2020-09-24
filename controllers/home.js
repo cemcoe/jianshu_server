@@ -7,7 +7,7 @@ class HomeCtl {
     ctx.body = {
       status: 200,
       data: {
-        url: `${ctx.origin}/uploads/${basename}`
+        url: `/uploads/${basename}`
       }
     }
   }

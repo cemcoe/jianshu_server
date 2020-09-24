@@ -17,7 +17,7 @@ const userSchema = new Schema({
   // 用户简介
   bio: { type: String, default: '该用户没有给自己编写简介' },
   // 用户头像
-  avatar: { type: String, default: 'https://cemcoe.imfast.io/jianshu/default_avatar.png' },
+  avatar: { type: String, default: '/uploads/default_avatar.png' },
 
   following: {
     type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
