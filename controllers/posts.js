@@ -58,7 +58,12 @@ class PostCtl {
     if (!post) {
       ctx.throw(404, '文章不存在')
     }
-    ctx.body = post
+    ctx.body = {
+      status: 200,
+      data: {
+        post
+      }
+    }
   }
 
 }
