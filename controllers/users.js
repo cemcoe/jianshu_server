@@ -85,9 +85,22 @@ class UserCtl {
       bio: { type: "string", required: false },
       avatar: { type: "string", required: false },
     })
-    const user = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body)
+
+    // TODO try catch 捕获错误
+    const user = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body, { new: true })
+    // 默认是原先的数据，加new可以配置返回新数据
     if (!user) { ctx.throw(404, '用户不存在') }
-    ctx.body = ctx.request.body;
+
+    // 前端更新用户信息，返回更新后的完整的用户信息，不然前端要先请求该接口，
+    // 而后还要请求获取用户信息的接口
+    // console.log(user)
+
+    ctx.body = {
+      status: 200,
+      data: {
+        user
+      }
+    };
   }
 
   // 获取自己的信息
@@ -129,7 +142,7 @@ class UserCtl {
 
   // 获取用户编写的文章列表
   async listUserPosts(ctx) {
-    const posts = await Post.find({author: { _id: ctx.params.id}}).sort({"createdAt": -1}).populate('author') || []
+    const posts = await Post.find({ author: { _id: ctx.params.id } }).sort({ "createdAt": -1 }).populate('author') || []
     ctx.body = {
       status: 200,
       data: posts,
@@ -159,7 +172,7 @@ class UserCtl {
         message: '你已经关注此用户'
       }
     }
-    
+
   }
 
   // 获取用户关注列表
