@@ -66,6 +66,57 @@ class PostCtl {
     }
   }
 
+
+  // 中间件检查是不是修改自己的文章
+  async checkOwner(ctx, next) {
+    // jwt 将 token 解析到的用户信息存放到了ctx.state.user中 ctx.state.user._id
+    // 找到文章的作者id和当前登录的用户id比较
+    const userId = ctx.state.user._id
+    let postId = ctx.params.id
+    // 根据文章id找文章作者id
+    let post = await Post.findById(postId).populate('author')
+    const authorId = JSON.stringify(post.author._id).split('"')[1]
+    // authorId 是个对象，mongodb里面的
+
+
+    // ctx.body = {
+    //   "1": typeof authorId,
+    //   "2": typeof userId,
+    //   "3": authorId,
+    //   "4": userId,
+    //   "5": authorId === userId
+    // }
+
+    if (userId !== authorId) {
+      ctx.throw(403, '没有权限')
+    }
+    await next()
+  }
+
+
+
+  // 更新文章
+  async updateById(ctx) {
+    ctx.verifyParams({
+      title: { type: 'string', required: false },
+      content: { type: 'string', required: false },
+    })
+
+    // TODO try catch 捕获错误
+    const post = await Post.findByIdAndUpdate(ctx.params.id, ctx.request.body, { new: true })
+    // 默认是原先的数据，加new可以配置返回新数据
+    if (!post) { ctx.throw(404, '用户不存在') }
+
+    ctx.body = {
+      status: 200,
+      data: {
+        post
+      }
+    };
+
+
+  }
+
 }
 
 
