@@ -9,7 +9,13 @@ class CommentsCtl {
     const commentator = ctx.state.user._id
     const { postId } = ctx.params
     const comment = await new Comment({ ...ctx.request.body, commentator, postId }).save()
-    ctx.body = comment
+    ctx.body = {
+      status: 200,
+      data: {
+        comment
+      }
+
+    }
   }
 
   // 获取评论列表
