@@ -10,7 +10,7 @@ const auth = jwt({ secret })
 // jwt 生成的用户信息存放在ctx.state上
 
 // router.get('/posts', find)
-router.post('/nb', auth, create)
+router.post('/nbs', auth, create)
 // {"title": "连载名称", "abstract": "连载简介"}
 
 module.exports = router
