@@ -3,6 +3,7 @@ const jsonwebtoken = require('jsonwebtoken')
 const { secret } = require('../config')
 const User = require('../models/users')
 const Post = require('../models/posts')
+const NoteBook = require('../models/notebooks')
 
 
 class UserCtl {
@@ -146,6 +147,18 @@ class UserCtl {
     ctx.body = {
       status: 200,
       data: posts,
+    }
+
+  }
+
+  // 获取用户创建的连载
+  async listUserNoteBooks(ctx) {
+    const notebooks = await NoteBook.find({ author: { _id: ctx.params.id } }) || []
+    ctx.body = {
+      status: 200,
+      data: {
+        notebooks,
+      }
     }
 
   }
