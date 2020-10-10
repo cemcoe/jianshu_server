@@ -19,8 +19,17 @@ class NoteBookCtl {
     }
   }
 
-  // 获取用户的连载
-  
+  // 获取连载详情
+  async findById(ctx) {
+    const notebook = await NoteBook.findById(ctx.params.id).populate('author')
+    ctx.body = {
+      status: 200,
+      data: {
+        notebook,
+      }
+    }
+  }
+
 }
 
 

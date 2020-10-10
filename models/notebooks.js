@@ -18,7 +18,7 @@ const noteBooksSchema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: 'User' },
 
   // 连载中的文章列表
-  postsList: {
+  postList: {
     type: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     default: [],
   },

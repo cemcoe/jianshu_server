@@ -3,7 +3,7 @@ const jwt = require('koa-jwt')
 
 const router = new Router()
 // const { checkOwner } = require('../controllers/users.js')
-const { create, } = require('../controllers/notebooks.js')
+const { create, findById } = require('../controllers/notebooks.js')
 const { secret } = require('../config')
 
 const auth = jwt({ secret })
@@ -11,6 +11,8 @@ const auth = jwt({ secret })
 
 // router.get('/posts', find)
 router.post('/nbs', auth, create)
+// 获取连载详情
+router.get('/nbs/:id', findById)
 // {"title": "连载名称", "abstract": "连载简介"}
 
 module.exports = router
