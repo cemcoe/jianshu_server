@@ -30,6 +30,33 @@ class NoteBookCtl {
     }
   }
 
+  // 获取所有连载列表
+  async find(ctx) {
+    const { per_page = 10 } = ctx.query
+    const page = Math.max(ctx.query.page * 1, 1) - 1
+    const perPage = Math.max(per_page * 1, 1)
+    const q = new RegExp(ctx.query.q)
+    // skip(), limilt(), sort()三个放在一起执行的时候，执行的顺序是先 sort(), 然后是 skip()，最后是显示的 limit()。
+
+    const notebook = await NoteBook.find({
+      $or: [{ title: q }, { content: q }]
+    }).sort({ "createdAt": -1 }).limit(perPage).skip(page * perPage).populate('author')
+
+    if (notebook.length === 0) {
+      ctx.body = {
+        status: 404,
+        message: '没有找到连载'
+      }
+      return
+    }
+    ctx.body = {
+      status: 200,
+      data: {
+        notebook,
+      }
+    }
+  }
+
 }
 
 
