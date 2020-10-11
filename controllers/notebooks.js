@@ -21,7 +21,7 @@ class NoteBookCtl {
 
   // 获取连载详情
   async findById(ctx) {
-    const notebook = await NoteBook.findById(ctx.params.id).populate('author')
+    const notebook = await NoteBook.findById(ctx.params.id).populate('author').populate('postList')
     ctx.body = {
       status: 200,
       data: {
@@ -57,6 +57,27 @@ class NoteBookCtl {
     }
   }
 
+  // 将文章添加到连载中
+  async addPostToNoteBook(ctx) {
+    // console.log(ctx.params.noteid)
+    // 连载id，文章id
+    // const { noteId, postId } = ctx.params
+    const noteId = ctx.params.noteid
+    const postId = ctx.params.postid
+    // 拿连载id获取连载中的文章列表
+    const notebook = await NoteBook.findById(noteId)
+    // 将postId放到postList中
+    if (!notebook.postList.map(id => id.toString()).includes(postId)) {
+      notebook.postList.push(postId)
+      notebook.save()
+      ctx.status = 204
+    } else {
+      ctx.body = {
+        status: 401,
+        message: '该文章已经在连载中，无需重复添加'
+      }
+    }
+  }
 }
 
 
