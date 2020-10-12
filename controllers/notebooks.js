@@ -70,7 +70,10 @@ class NoteBookCtl {
     if (!notebook.postList.map(id => id.toString()).includes(postId)) {
       notebook.postList.push(postId)
       notebook.save()
-      ctx.status = 204
+      ctx.body = {
+        status: 204,
+        message: '添加成功'
+      }
     } else {
       ctx.body = {
         status: 401,
