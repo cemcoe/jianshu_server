@@ -52,16 +52,18 @@ class PostCtl {
 
   // 获取特定文章
   async findById(ctx) {
-
-    const post = await Post.findById(ctx.params.id).populate('author')
-
-    if (!post) {
-      ctx.throw(404, '文章不存在')
-    }
-    ctx.body = {
-      status: 200,
-      data: {
-        post
+    try {
+      const post = await Post.findById(ctx.params.id).populate('author').select('+content')
+      ctx.body = {
+        status: 200,
+        data: {
+          post
+        }
+      }
+    } catch (error) {
+      ctx.body = {
+        status: 404,
+        message: "没有该文章"
       }
     }
   }

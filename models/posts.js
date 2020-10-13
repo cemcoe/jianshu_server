@@ -10,9 +10,9 @@ const { Schema, model } = mongoose
 const postSchema = new Schema({
   __v: { type: Number, select: false },
   title: { type: String, required: true },
-  content: { type: String, required: true },
   abstract: { type: String, required: true },
   author: { type: Schema.Types.ObjectId, ref: 'User' },
+  content: { type: String, required: true, select: false },
 }, { timestamps: true })
 
 module.exports = model('Post', postSchema)
