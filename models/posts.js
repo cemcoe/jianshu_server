@@ -13,6 +13,7 @@ const postSchema = new Schema({
   abstract: { type: String, required: true },
   author: { type: Schema.Types.ObjectId, ref: 'User' },
   content: { type: String, required: true, select: false },
+  wordcount: { type: Number, required: true },
 }, { timestamps: true })
 
 module.exports = model('Post', postSchema)

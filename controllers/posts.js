@@ -9,9 +9,11 @@ class PostCtl {
       content: { type: 'string', required: true },
     })
     const author = ctx.state.user._id
-    const abstract = ctx.request.body.abstract || ctx.request.body.content.slice(0, 100)
+    const data = ctx.request.body
+    const abstract = data.abstract || data.content.slice(0, 100)
+    const wordcount = data.content.length
 
-    const post = await new Post({ ...ctx.request.body, author, abstract }).save()
+    const post = await new Post({ ...data, author, abstract, wordcount }).save()
 
     ctx.body = post
   }
@@ -102,6 +104,9 @@ class PostCtl {
       title: { type: 'string', required: false },
       content: { type: 'string', required: false },
     })
+
+    // 更新字数
+    ctx.request.body.wordcount = ctx.request.body.content.length
 
     // TODO try catch 捕获错误
     const post = await Post.findByIdAndUpdate(ctx.params.id, ctx.request.body, { new: true })
