@@ -13,7 +13,16 @@ class PostCtl {
     const abstract = data.abstract || data.content.slice(0, 100)
     const wordcount = data.content.length
 
-    const post = await new Post({ ...data, author, abstract, wordcount }).save()
+    // 获取文章中图片列表
+    const imgRe = /(https?:[^:<>"]*\/)([^:<>"]*)(\.((png!thumbnail)|(png)|(jpg)|(webp)))/g
+    let imgsLink = []
+    // 默认图片列表为空，如果在文章中找到图片则更新图片列表
+    if (imgRe.test(data.content)) {
+      imgsLink = data.content.match(imgRe)
+    }
+
+
+    const post = await new Post({ ...data, author, abstract, wordcount, imgsLink }).save()
 
     ctx.body = post
   }
@@ -107,6 +116,25 @@ class PostCtl {
 
     // 更新字数
     ctx.request.body.wordcount = ctx.request.body.content.length
+    const abstract = ctx.request.body.abstract || ctx.request.body.content.slice(0, 100)
+    ctx.request.body.abstract = abstract
+
+    // 更新文章中图片列表
+    const imgRe = /(https?:[^:<>"]*\/)([^:<>"]*)(\.((png!thumbnail)|(png)|(jpg)|(webp)))/g
+    let imgsLink = []
+    // 默认图片列表为空，如果在文章中找到图片则更新图片列表
+    if (imgRe.test(ctx.request.body.content)) {
+      imgsLink = ctx.request.body.content.match(imgRe)
+    }
+
+    // 更新图片列表
+    ctx.request.body.imgsLink = imgsLink
+
+
+    // 更新摘要
+
+
+
 
     // TODO try catch 捕获错误
     const post = await Post.findByIdAndUpdate(ctx.params.id, ctx.request.body, { new: true })
