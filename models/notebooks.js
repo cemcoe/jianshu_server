@@ -16,6 +16,8 @@ const noteBooksSchema = new Schema({
   abstract: { type: String, required: false, default: '连载简介' },
   // 创建连载的人
   author: { type: Schema.Types.ObjectId, ref: 'User' },
+  // 连载图表
+  icon: { type: String, required: false, default: 'https://cdn.pixabay.com/photo/2020/09/08/21/46/trees-5555938_960_720.jpg' },
 
   // 连载中的文章列表
   postList: {
