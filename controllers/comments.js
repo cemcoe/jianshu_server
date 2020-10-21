@@ -1,4 +1,5 @@
 const Comment = require('../models/comments')
+const Post = require('../models/posts')
 
 class CommentsCtl {
   // 创建评论
@@ -9,10 +10,17 @@ class CommentsCtl {
     const commentator = ctx.state.user._id
     const { postId } = ctx.params
     const comment = await new Comment({ ...ctx.request.body, commentator, postId }).save()
+    // 获取文章评论数据数量
+    const commentcount = (await Comment.find({ postId })).length
+    // 更新文章评论数量
+    const post = await Post.findByIdAndUpdate(postId, { commentcount }, { new: true })
+
+
     ctx.body = {
       status: 200,
       data: {
-        comment
+        comment,
+        commentcount,
       }
 
     }

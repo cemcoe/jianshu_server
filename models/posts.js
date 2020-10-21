@@ -14,6 +14,7 @@ const postSchema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: 'User' },
   content: { type: String, required: true, select: false },
   wordcount: { type: Number, required: true },
+  commentcount: { type: Number, required: true, default: 0 },
   imgsLink: { type: [{ type: String }] },
 }, { timestamps: true })
 
