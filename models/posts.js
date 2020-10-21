@@ -15,6 +15,8 @@ const postSchema = new Schema({
   content: { type: String, required: true, select: false },
   wordcount: { type: Number, required: true },
   commentcount: { type: Number, required: true, default: 0 },
+  // 浏览量
+  viewcount: { type: Number, required: true, default: 0 },
   imgsLink: { type: [{ type: String }] },
 }, { timestamps: true })
 

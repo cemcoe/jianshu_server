@@ -12,6 +12,7 @@ class PostCtl {
     const data = ctx.request.body
     const abstract = data.abstract || data.content.slice(0, 100)
     const wordcount = data.content.length
+    const viewcount = 0
 
     // 获取文章中图片列表
     const imgRe = /(https?:[^:<>"]*\/)([^:<>"]*)(\.((png!thumbnail)|(png)|(jpg)|(webp)))/g
@@ -22,7 +23,7 @@ class PostCtl {
     }
 
 
-    const post = await new Post({ ...data, author, abstract, wordcount, imgsLink }).save()
+    const post = await new Post({ ...data, author, abstract, wordcount, viewcount, imgsLink }).save()
 
     ctx.body = post
   }
@@ -63,11 +64,18 @@ class PostCtl {
   // 获取特定文章
   async findById(ctx) {
     try {
-      const post = await Post.findById(ctx.params.id).populate('author').select('+content')
+
+      // 拿到原始数据
+      let post = await Post.findById(ctx.params.id).populate('author').select('+content')
+      // 阅读量加1
+      const viewcount = post.viewcount + 1
+      // 更新文章阅读量信息
+      post = await Post.findByIdAndUpdate(ctx.params.id, { viewcount }, { new: true }).populate('author').select('+content')
+
       ctx.body = {
         status: 200,
         data: {
-          post
+          post,
         }
       }
     } catch (error) {
