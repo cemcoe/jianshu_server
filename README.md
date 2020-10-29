@@ -1,6 +1,8 @@
 # jianshu_server
 简书服务端
 
+[接口文档](./api/Index.md)
+
 ```
 // 开发模式
 npm run dev
