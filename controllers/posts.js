@@ -7,7 +7,9 @@ class PostCtl {
     ctx.verifyParams({
       title: { type: 'string', required: true },
       content: { type: 'string', required: true },
+      status: { type: "number", enum: [-4, -3, -2, -1, 0, 1], required: true, default: -1 },
     })
+    console.log(ctx.request.body)
     const author = ctx.state.user._id
     const data = ctx.request.body
     const abstract = data.abstract || data.content.slice(0, 100)
@@ -43,7 +45,9 @@ class PostCtl {
     // skip(), limilt(), sort()三个放在一起执行的时候，执行的顺序是先 sort(), 然后是 skip()，最后是显示的 limit()。
 
     const post = await Post.find({
-      $or: [{ title: q }, { content: q }]
+      $or: [{ title: q }, { content: q }],
+      // 仅展示外界可见的文章
+      status: 1,
     }).sort({ "createdAt": -1 }).limit(perPage).skip(page * perPage).populate('author')
 
     if (post.length === 0) {
