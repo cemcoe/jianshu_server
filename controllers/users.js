@@ -142,13 +142,15 @@ class UserCtl {
   }
 
   // 获取用户编写的文章列表
+  // 公开发表文章列表
   async listUserPosts(ctx) {
-    const posts = await Post.find({ author: { _id: ctx.params.id } }).sort({ "createdAt": -1 }).populate('author') || []
+    // 未来需要将status抽离，默认获取公开文章列表
+    // 让前端传status，来获取不同状态的文章列表
+    const posts = await Post.find({ author: { _id: ctx.params.id }, status: 1 }).sort({ "createdAt": -1 }).populate('author') || []
     ctx.body = {
       status: 200,
       data: posts,
     }
-
   }
 
   // 获取用户创建的连载
