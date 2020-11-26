@@ -145,8 +145,13 @@ class UserCtl {
   // 公开发表文章列表
   async listUserPosts(ctx) {
     // 未来需要将status抽离，默认获取公开文章列表
-    // 让前端传status，来获取不同状态的文章列表
-    const posts = await Post.find({ author: { _id: ctx.params.id }, status: 1 }).sort({ "createdAt": -1 }).populate('author') || []
+    // 让前端传status，来获取不同状态的文章列表,
+    // TODO 语义化
+    // private public
+
+    const { status } = ctx.query
+
+    const posts = await Post.find({ author: { _id: ctx.params.id }, status: status }).sort({ "createdAt": -1 }).populate('author') || []
     ctx.body = {
       status: 200,
       data: posts,
