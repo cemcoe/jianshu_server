@@ -210,12 +210,15 @@ GET
     "data": {
         "user": {
             "gender": "male",
-            "bio": "该用户没有给自己编写简介",
-            "avatar": "/uploads/default_avatar.png",
-            "_id": "5f9a232c75ef0cdd7017decf",
-            "name": "233",
-            "createdAt": "2020-10-29T02:04:28.599Z",
-            "updatedAt": "2020-10-29T02:04:28.599Z"
+            "bio": "企图混进05的阵营",
+            "avatar": "/uploads/upload_6e61795682aece42a1661fc444629334.png",
+            "following_count": 7,
+            "follower_count": 5,
+            "private_post_count": 3,
+            "_id": "5f6836ac7ce71b1a82ac3b75",
+            "name": "cemcoe",
+            "createdAt": "2020-09-21T05:14:20.386Z",
+            "updatedAt": "2020-11-25T23:56:50.286Z"
         }
     }
 }
