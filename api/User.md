@@ -92,6 +92,9 @@ POST
             "avatar": "/uploads/default_avatar.png",
             "_id": "5f9a232c75ef0cdd7017decf",
             "name": "233",
+            "following_count": 7,
+            "follower_count": 5,
+            "private_post_count": 3,
             "createdAt": "2020-10-29T02:04:28.599Z",
             "updatedAt": "2020-10-29T02:04:28.599Z"
         }
