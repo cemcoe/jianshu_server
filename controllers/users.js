@@ -45,6 +45,14 @@ class UserCtl {
     })
     try {
       const user = await User.findOne(ctx.request.body)
+
+      // 获取用户关注数量
+      user.following_count = (await User.findById(user._id).select('+following')).following.length
+      // 获取用户粉丝数量
+      user.follower_count = (await User.find({ following: user._id })).length
+      // 获取用户私密文章列表
+      user.private_post_count = (await Post.find({ author: { _id: user._id }, status: -1 }) || []).length
+
       const { _id, name } = user
       // 拿_id和name加密
       const token = jsonwebtoken.sign({ _id, name }, secret, { expiresIn: '1d' })
