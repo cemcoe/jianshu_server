@@ -123,15 +123,23 @@ class UserCtl {
       .limit(perPage).skip(page * perPage)
   }
 
-  // 获取特定用户
+  // 获取特定用户信息
   async findById(ctx) {
     try {
       const user = await User.findById(ctx.params.id)
+      
+      // 获取用户关注数量
+      user.following_count = (await User.findById(ctx.params.id).select('+following').populate('following')).following.length
+      // 获取用户粉丝数量
+      user.follower_count = (await User.find({ following: ctx.params.id })).length
+      // 获取用户私密文章列表
+      user.private_post_count = (await Post.find({ author: { _id: ctx.params.id }, status: -1 }) || []).length
+
       ctx.body = {
         status: 200,
         data: {
-          user
-        }
+          user,
+        },
       }
     } catch (error) {
       ctx.body = {
