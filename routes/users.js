@@ -20,7 +20,11 @@ router.get('/userinfo', auth, findUserInfo)
 router.patch('/users/:id', auth, checkOwner, update)
 router.delete('/users/:id', ctx => ctx.body = '删除用户')
 router.post('/login', login)
+
+// 获取用户关注列表 用户列表 文章列表等
 router.get('/users/:id/following', listFollowing)
+
+
 router.put('/users/following/:id', auth, follow)
 router.delete('/users/following/:id', auth, unfollow)
 router.get('/users/:id/followers', listFollowers)

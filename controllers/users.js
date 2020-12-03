@@ -135,7 +135,7 @@ class UserCtl {
   async findById(ctx) {
     try {
       const user = await User.findById(ctx.params.id)
-      
+
       // 获取用户关注数量
       user.following_count = (await User.findById(ctx.params.id).select('+following').populate('following')).following.length
       // 获取用户粉丝数量
@@ -217,18 +217,53 @@ class UserCtl {
 
   }
 
-  // 获取用户关注列表
+  // 获取用户关注列表，传值type：users
   async listFollowing(ctx) {
+    // 传字段 用户列表，文章列表，动态列表
+    const { type = "users" } = ctx.query
+    // 关注用户列表
     const user = await User.findById(ctx.params.id).select('+following').populate('following')
-    if (!user) {
-      ctx.throw(404)
-    }
-    ctx.body = {
-      status: 200,
-      data: {
-        following: user.following
+
+
+    if (type === "users") {
+      if (!user) {
+        ctx.throw(404)
+      }
+      ctx.body = {
+        status: 200,
+        data: {
+          following: user.following
+        }
+      }
+    } else if (type === "posts") {
+      // 拿关注列表中每个数据去找文章，按顺序排成新列表
+      // 获取用户文章列表
+      const postList = []
+
+      // 拿到所有用户的文章列表，按时间顺序排列
+      // 先看单个用户
+      const followings = user.following
+
+      for (let i = 0; i < followings.length; i++) {
+        const posts = await Post.find({ author: { _id: followings[i]._id } })
+
+        // 追加到postList
+        postList.push(...posts)
+
+        // TODO 对postList按时间进行排序
+
+      }
+
+      ctx.body = {
+        status: 200,
+        data: {
+          postList
+        },
+        message: "关注用户列表type：users,posts"
       }
     }
+
+
   }
 
   // 粉丝列表
