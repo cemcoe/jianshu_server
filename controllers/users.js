@@ -243,27 +243,43 @@ class UserCtl {
       // 拿到所有用户的文章列表，按时间顺序排列
       // 先看单个用户
       const followings = user.following
+      // const followingList = ["5f771acb6248a70b887ebfc4"]
+      // followings.forEach((item, index) => console.log(item._id))
 
-      for (let i = 0; i < followings.length; i++) {
-        const posts = await Post.find({ author: { _id: followings[i]._id } })
+      const followingList = followings.map(item => item._id)
+      console.log(followingList)
 
-        // 追加到postList
-        postList.push(...posts)
 
-        // TODO 对postList按时间进行排序
+      // 这样子很浪费时间，后续要持久化存储，拿空间换时间
+      // for (let i = 0; i < followingList.length; i++) {
+      //   // 只取最近前三篇
+      //   const posts = await Post.find({ author: { _id: followingList[i] }, status: 1 }).limit(1).populate('author')
+      //   // 追加到postList
+      //   postList.push(...posts)
+      // }
 
-      }
+
+      // 只取最近前三篇
+      const posts = await Post.find({
+        // TODO 这里怎么搞，循环太费时间，$in
+        author: { _id: followingList[0] },
+        status: 1
+      })
+        .limit(3).populate('author')
+
+      // 追加到postList
+      postList.push(...posts)
+      // 对postList按时间进行排序
+      postList.sort((a, b) => b.createdAt - a.createdAt)
 
       ctx.body = {
         status: 200,
         data: {
-          postList
+          postList,
         },
         message: "关注用户列表type：users,posts"
       }
     }
-
-
   }
 
   // 粉丝列表
