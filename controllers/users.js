@@ -4,6 +4,7 @@ const { secret } = require('../config')
 const User = require('../models/users')
 const Post = require('../models/posts')
 const NoteBook = require('../models/notebooks')
+const Room = require('../models/rooms')
 
 
 class UserCtl {
@@ -309,6 +310,22 @@ class UserCtl {
         message: '取消关注失败'
       }
     }
+  }
+
+
+  // 获取用户参与的房间
+  async listRooms(ctx) {
+    const rooms = await Room.find({
+      members: ctx.params.uid
+      // 查找数组中最少一个值
+    }) || []
+    ctx.body = {
+      status: 200,
+      data: {
+        rooms,
+      }
+    }
+
   }
 }
 

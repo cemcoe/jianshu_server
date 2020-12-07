@@ -4,7 +4,8 @@ const jwt = require('koa-jwt')
 const router = new Router()
 const { create, login, checkOwner, update, find, findById, findUserInfo,
   listUserPosts, follow, listFollowing, unfollow, listFollowers,
-  listUserNoteBooks } = require('../controllers/users.js')
+  listUserNoteBooks,
+  listRooms, } = require('../controllers/users.js')
 const { secret } = require('../config')
 
 const auth = jwt({ secret })
@@ -32,4 +33,7 @@ router.get('/users/:id/followers', listFollowers)
 router.get('/users/:id/posts', listUserPosts)
 // 得到用户连载列表
 router.get('/users/:id/nbs', listUserNoteBooks)
+
+// 得到用户参与的聊天室列表
+router.get('/users/:uid/rooms', listRooms)
 module.exports = router
