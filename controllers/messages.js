@@ -21,6 +21,19 @@ class MessagesCtl {
 
     }
   }
+
+  // 获取聊天室中的消息
+  async find(ctx) {
+    const { roomId } = ctx.params
+    const messages = await Message
+      .find({ roomId })
+    ctx.body = {
+      status: 200,
+      data: {
+        messages,
+      }
+    }
+  }
 }
 
 module.exports = new MessagesCtl()
