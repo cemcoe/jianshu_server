@@ -9,7 +9,10 @@ class RoomCtl {
     const room = await new Room({ creator, members }).save()
 
     ctx.body = {
-      room,
+      status: 200,
+      data: {
+        room,
+      }
     }
   }
 
@@ -19,7 +22,7 @@ class RoomCtl {
 
     const room = await Room.find({
       creator,
-      
+
     }).sort({ "createdAt": -1 })
 
 
