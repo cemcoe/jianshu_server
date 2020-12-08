@@ -31,7 +31,24 @@ class RoomCtl {
     }
   }
 
-
+  // 获取指定聊天室的详情
+  // 获取特定文章
+  async findById(ctx) {
+    try {
+      let room = await Room.findById(ctx.params.rid).populate('members')
+      ctx.body = {
+        status: 200,
+        data: {
+          room,
+        }
+      }
+    } catch (error) {
+      ctx.body = {
+        status: 404,
+        message: "没有该聊天室"
+      }
+    }
+  }
 }
 
 
