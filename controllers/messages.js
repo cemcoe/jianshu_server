@@ -26,7 +26,7 @@ class MessagesCtl {
   async find(ctx) {
     const { roomId } = ctx.params
     const messages = await Message
-      .find({ roomId })
+      .find({ roomId }).populate('creator')
     ctx.body = {
       status: 200,
       data: {
