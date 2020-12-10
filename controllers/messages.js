@@ -1,4 +1,5 @@
 const Message = require('../models/messages')
+const Room = require('../models/rooms')
 
 class MessagesCtl {
   // 创建消息
@@ -12,6 +13,10 @@ class MessagesCtl {
 
     const message = await new Message({ ...ctx.request.body, creator, roomId }).save()
 
+
+    // 更新最新消息
+    const latestMessage = message._id
+    await Room.findByIdAndUpdate(roomId, { latestMessage }, { new: true })
 
     ctx.body = {
       status: 200,

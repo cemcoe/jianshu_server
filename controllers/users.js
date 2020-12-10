@@ -318,7 +318,8 @@ class UserCtl {
     const rooms = await Room.find({
       members: ctx.params.uid
       // 查找数组中最少一个值
-    }).populate('members') || []
+    }).populate('members latestMessage') || []
+    // 填充两个字段
     ctx.body = {
       status: 200,
       data: {
