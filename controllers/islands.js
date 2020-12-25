@@ -1,4 +1,5 @@
 const Island = require('../models/islands')
+const IslandPost = require('../models/islandPosts')
 
 class IslandCtl {
   async create(ctx) {
@@ -22,6 +23,15 @@ class IslandCtl {
     }
   }
 
+  async listIslandPosts(ctx) {
+    const islandPost = await IslandPost.find().populate('island').populate('author')
+    ctx.body = {
+      status: 200,
+      data: {
+        islandPost
+      }
+    }
+  }
 }
 
 
