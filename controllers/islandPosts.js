@@ -8,9 +8,9 @@ class IslandPostCtl {
       content: { type: 'string', required: true },
     })
 
-    const creator = ctx.state.user._id
-    const { islandId } = ctx.params
-    const islandPost = await new IslandPost({ ...ctx.request.body, creator, islandId }).save()
+    const author = ctx.state.user._id
+    const island = ctx.params.islandId
+    const islandPost = await new IslandPost({ ...ctx.request.body, author, island }).save()
 
     ctx.body = {
       status: 200,
