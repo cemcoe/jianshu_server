@@ -32,6 +32,18 @@ class IslandCtl {
       }
     }
   }
+
+  async getIslandDetail(ctx) {
+    const island = await Island.findById(ctx.params.islandId)
+    ctx.body = {
+      status: 200,
+      data: {
+        island
+      }
+    }
+  }
+
+
 }
 
 
