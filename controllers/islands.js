@@ -24,7 +24,7 @@ class IslandCtl {
   }
 
   async listIslandPosts(ctx) {
-    const islandPost = await IslandPost.find().populate('island').populate('author')
+    const islandPost = await IslandPost.find().sort({ "createdAt": -1 }).populate('island').populate('author')
     ctx.body = {
       status: 200,
       data: {
