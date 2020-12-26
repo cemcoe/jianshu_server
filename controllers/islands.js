@@ -43,6 +43,19 @@ class IslandCtl {
     }
   }
 
+  async listCurrentIslandPosts(ctx) {
+    const islandId = ctx.params.islandId
+    const islandPost = await IslandPost.find(
+      { island: islandId }
+    ).sort({ "createdAt": -1 }).populate('author')
+    ctx.body = {
+      status: 200,
+      data: {
+        islandPost
+      }
+    }
+  }
+
 
 }
 
